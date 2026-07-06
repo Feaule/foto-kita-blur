@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import time
+import pygame
 
 # Inisialisasi MediaPipe Hands
 mp_hands = mp.solutions.hands
@@ -46,6 +47,15 @@ blur_transition_duration = 0.5  # durasi transisi dalam detik
 current_blur_level = 0.0        # nilai 0.0 (tidak blur) hingga 1.0 (blur maksimal)
 last_time = time.time()
 max_blur_kernel = 99            # maksimal ukuran kernel blur
+
+# Inisialisasi audio dan putar lagu
+pygame.mixer.init()
+try:
+    pygame.mixer.music.load("Sal Priadi - Foto Kita Blur _ lyrics.mp3")
+    pygame.mixer.music.set_volume(0.1) # Mengatur volume lagu (0.0 hingga 1.0)
+    pygame.mixer.music.play(-1) # -1 untuk mengulang terus
+except pygame.error as e:
+    print(f"Gagal memutar lagu: {e}")
 
 while True:
     current_time = time.time()
@@ -110,5 +120,9 @@ while True:
         break
 
 # Bersihkan resources
+try:
+    pygame.mixer.music.stop()
+except:
+    pass
 cap.release()
 cv2.destroyAllWindows()
